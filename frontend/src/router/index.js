@@ -12,12 +12,12 @@ const router = createRouter({
       component : Binho
     },
     {
-      path: '/',
+      path: '/games',
       name : 'Games',
       component : Games
     },
     {
-      path:'/auth',
+      path:'/',
       name: 'Authentication',
       component : Authentication
     }

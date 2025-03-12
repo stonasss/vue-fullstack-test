@@ -2,7 +2,7 @@
     import { ref } from 'vue';
     import { useAuth } from '@/composables/useAuth';
 
-    const { token, registerUser, loginUser } = useAuth();
+    const { registerUser, loginUser } = useAuth();
 
     const isRegister = ref(false);
     const newUser = ref({
@@ -36,16 +36,16 @@
             <h3>Welcome!</h3>
             <form @submit="handleSubmit">
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" v-model="newUser.username"/>
+                    <label for="username"></label>
+                    <input type="text" v-model="newUser.username" placeholder="Username"/>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="text" v-model="newUser.password"/>
+                    <label for="password"></label>
+                    <input type="password" v-model="newUser.password" placeholder="Password"/>
                 </div>
                 <span>
-                    <button type="submit" class="btn btn-success" @click="toggleForm">Login</button>
-                    <button type="submit" class="btn btn-primary" @click="toggleForm">Register</button>
+                    <button type="submit" class="btn btn-primary">{{ isRegister ? 'Register' : 'Login' }}</button>
+                    <button type="button" class="btn btn-success" @click="toggleForm">Switch to {{ isRegister ? 'Login' : 'Register' }}</button>
                 </span>
             </form>
         </div>
@@ -54,6 +54,7 @@
 
 <style scoped>
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -62,21 +63,36 @@
     border-radius: 5px;
     z-index: 1001;
 
-    label {
-        padding: 5px;
+    h3 {
+        margin-top: 30px;
     }
 
     input {
-        margin: 0 0 10px 0;
+        position: absolute;
+        left: 43%;
+        height: 25px;
+        width: 180px;
+        margin: 5px;
+    }
+
+    span {
+        position: absolute;
+        top: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
     }
 
     button {
-        margin-right: 20px;
+        margin-top: 15px;
+        width: 200px;
     }
 }
 
 .form-group {
-    width: 100px;
+    width: 200px;
 }
 
 .close-btn {

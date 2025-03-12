@@ -3,13 +3,16 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 export function useAuth() {
-    const token = ref(null);
+    const token = ref(localStorage.getItem('token') || null);
     const router = useRouter();
+
+    const api = axios.create({
+        baseURL: 'http://localhost:5000'
+    });
 
     const registerUser = async (newUser) => {
         try {
-            const path = 'http://localhost:5000/register';
-            await axios.post(path, newUser);
+            await api.post('/register', newUser);
             console.log('User registered successfully');
         } catch (err) {
             console.error(err)
@@ -18,10 +21,10 @@ export function useAuth() {
 
     const loginUser = async (logIn) => {
         try {
-            const path = 'http://localhost:5000/login';
-            const res = await axios.post(path, logIn);
+            const res = await api.post('/login', logIn);
             token.value = res.data.token
             console.log(res.data)
+            localStorage.setItem('token', token.value);
             console.log('User logged in, welcome back!');
             router.push('/games');
         } catch (err) {

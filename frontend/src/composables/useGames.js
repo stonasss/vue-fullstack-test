@@ -4,10 +4,21 @@ import axios from 'axios';
 export function useGames() {
     const games = ref([]);
 
+    const api = axios.create({
+        baseURL: 'http://localhost:5000'
+    });
+
+    api.interceptors.request.use((config) => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config
+    })
+
     const getGames = async () => {
         try {
-            const path = 'http://localhost:5000/games';
-            const res = await axios.get(path);
+            const res = await api.get('/games');
             games.value = res.data.games;
             console.log('Games fetched:', games.value);
         } catch (err) {
@@ -17,8 +28,7 @@ export function useGames() {
 
     const addGame = async (newGame) => {
         try {
-            const path = 'http://localhost:5000/games';
-            await axios.post(path, newGame);
+            await api.post('/games', newGame);
             console.log('Game added successfully');
             await getGames();
         } catch (err) {
@@ -28,8 +38,7 @@ export function useGames() {
 
     const updateGame = async (id, updatedGame) => {
         try {
-            const path = `http://localhost:5000/games/${id}`;
-            await axios.put(path, updatedGame);
+            await api.put(`/games/${id}`, updatedGame);
             console.log('Game updated successfully');
             await getGames();
         } catch (err) {
@@ -39,8 +48,7 @@ export function useGames() {
 
     const deleteGame = async (id) => {
         try {
-            const path = `http://localhost:5000/games/${id}`;
-            await axios.delete(path);
+            await api.delete(`/games/${id}`);
             console.log('Game deleted successfully');
             await getGames();
         } catch (err) {

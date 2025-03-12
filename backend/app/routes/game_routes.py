@@ -27,7 +27,7 @@ def handle_games(current_user_id):
 
 @game_routes.route('/games/<id>', methods=['PUT'])
 @auth_required
-def update_game(id):
+def update_game(current_user_id, id):
     db = current_app.db
     service = GameService(db)
     updated_game = request.json
@@ -39,7 +39,7 @@ def update_game(id):
 
 @game_routes.route('/games/<id>', methods=['DELETE'])
 @auth_required
-def delete_game(id):
+def delete_game(current_user_id, id):
     db = current_app.db
     service = GameService(db)
     service.delete_game(id)
